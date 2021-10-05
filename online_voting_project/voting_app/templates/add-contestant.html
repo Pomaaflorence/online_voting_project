@@ -1,0 +1,155 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  <!-- load css files -->
+  <link rel="stylesheet" href="{% static 'styles/admin-page.css' %}">
+
+  <!-- font awesome icons -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://fontawesome.com/v5.15/icons?d=gallery&p=2&q=facebook" >
+  <link rel="stylesheet" type="text/css" href="https://fontawesome.com/v5.15/icons/twitter?style=brands">
+  <link rel="stylesheet" href=""> -->
+  <title>admin-contestants-page</title>
+</head>
+
+<body>
+  <!-- navigations menus -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#admin" style="color: brown; margin-right: 5rem;">Administrator Page</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ">
+          <a class="nav-link active" id="navbarlink" aria-current="page" href="#admin">Admin</a>
+          <a class="nav-link active" id="navbarlink" aria-current="page" href="{% url 'logout' %}">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- content of the page -->
+  <div class="card text-center">
+    <div class="card-header cardhead">
+      Add Contestants
+    </div>
+    <div class="card-body">
+      <div class="card">
+        <div class="card-body navbar-dark bg-primary" >
+          <!-- form content -->
+          <div class=" formcontent">
+            <form action="{% url 'add-contestant' %}" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <strong><p>CONTESTANT NAME</p></strong>
+                <input type="text"  id="inputcontent" name="ContestantName" placeholder="Enter contestant full name" required>
+              </div>
+              <div class="mb-3">
+                <strong><p>PROGRAME</p></strong>
+                <input type="text" id="inputcontent"   name="ProgramName" placeholder="Eg. BSc. Computer Science" required>
+              </div>
+              <div class="mb-3">
+                <strong><p>LEVEL</p></strong>
+                <input type="number" id="inputcontent"   name="Level" placeholder="Eg. 200" required>
+              </div>
+              <div class="mb-3">
+                <input type="submit" value="Add" class="btn btn-primary">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted" style="color: blue;">
+      Add New Contestant detalis.
+    </div>
+  </div>
+
+  <!-- list of qualified contestants -->
+  <div class="card text-center">
+    <div class="card-header cardhead">
+      List Of Contestants To Be Voted For.
+    </div>
+  <div class="card-body">
+    {% for contestants in Contestants_list %}
+    <h5 class="card-title" style="color: blue; margin-top: 1rem;"> <strong>Name:</strong> {{contestants.ContestantName}}</h5>
+    <p class="card-text" style="color: blue;"> <strong>Prog:</strong> {{contestants.ProgramName}}</p>
+    <p class="card-text" style="color: blue;"><strong>Level:</strong> {{contestants.Level}}</p>
+    <a href="delete/{{contestants.id}}" class="btn btn-danger">Delete</a>
+    <a href="edit/{{contestants.id}}" class="btn btn-secondary">Edit</a>
+    <hr>
+    {% endfor %}
+
+    <a href="{% url 'delete-all' %}" class="btn btn-danger">Delete All</a>
+   
+  </div>
+  <div class="card-footer text-muted" style="color: blue;">
+    Delete or Edit Contestant detalis.
+  </div>
+</div>
+
+
+  <!-- content of the footer -->
+  <footer>
+    <div class="row " style="background-color: black;">
+      <div class="col-sm-6">
+        <div class="card" id="footercard">
+          <div class="card-body">
+            <h5 class="card-title" style="color: blue; text-align: center;">ADMINISTRATOR</h5>
+            <p class="card-text">Admin must enter their details before they can access the contestants page</p>
+            <h5 style="color: red;">NOTE: </h5>
+            <h6 id="admin">FOR ADMINISTRATORS ONLY</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card" id="footercard">
+          <div class="card-body">
+            <h5 class="card-title" style="color: blue; text-align: center;">CONTESTANT</h5>
+            <p class="card-text">A new contestant can be added to the contestants list, 
+              and a contestant who does not qualify after being added can be deleted 
+              or a contestant details can be edited.</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-4">
+        <div class="card" id="footercard">
+          <div class="card-body">
+            <h5 class="card-title" style="color: blue; text-align: center;">List</h5>
+            <p class="card-text">The list page also display the names
+              and index numbers of students who took part in the vote.</p>
+          </div>
+        </div>
+      </div> -->
+      <div class="card-body">
+                      <!-- <i class="fab fa-facebook"></i>
+                      <i class="fab fa-twitter"></i> -->
+              <p style="text-align: center; color: blue;" class="copyright text-muted">Copyright &copy; Your Website 2021</p>
+    </div>
+  </footer>
+
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script> -->
+
+    
+</body>
+
+</html>
